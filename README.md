@@ -1,10 +1,11 @@
 # Bounded Quadrant System: Error-bounded trajectory compression on the go
-Implementation of the 2015/2016 papers:
+Reference implementation of the 2015/2016 papers:
 
 1. *J. Liu, K. Zhao, P. Sommer, S. Shang, B. Kusy and R. Jurdak, "Bounded Quadrant System: Error-bounded trajectory compression on the go," 2015 IEEE 31st International Conference on Data Engineering, 2015, pp. 987-998, doi: 10.1109/ICDE.2015.7113350.*
 
 1. *J. Liu et al., "A Novel Framework for Online Amnesic Trajectory Compression in Resource-Constrained Environments," in IEEE Transactions on Knowledge and Data Engineering, vol. 28, no. 11, pp. 2827-2841, 1 Nov. 2016, doi: 10.1109/TKDE.2016.2598171.*
 
+LEGACY CODE PROVIDED AS IS, NOT THE BEST READABILITY. 
 
 ## Usage
 This program calculates the optimal approximating curve to the original curve.
