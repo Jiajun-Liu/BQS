@@ -288,67 +288,16 @@ def readmap(fname):
 
 if __name__ == '__main__':
 
-    #test_process('../data/gpsout-163', -20, [5, 10, 20])
-
-    # n171: 3040
-    # n163: 1017
-
-    # fname = '../data/gpsout-163-commute'
-    # data = extract_data(fname, 200)
-    # dmap = readmap('163commute')
-    # process_once(fname, data, 10, dmap, 45)
 
     fname = '../data/gpsout-163'
     data = extract_data(fname, 1000)
     dmap = readmap('163')
     process_multi(fname, data, [5, 10, 20, 50, 100, 200], dmap, 1)
 
-    #test_once(fname, data, 22, dmap)
-
-    #x = np.array([0, 0.5, 1, 0.5, 0, -0.5, -1, -0.5, 0])
-    #y = np.array([1, 0.5, 0, -0.5, -1, -0.5, 0, 0.5, 1])
-    # print get_angles(x, y)
-
-    #dmap = build_dist_map(data[:, 0], data[:, 1])
-    #writemap(dmap, '163commute')
-    #dmap = build_dist_map(data[:, 0], data[:, 1])
-    # process_multi(fname, data, [5, 10, 20, 50, 100, 200], dmap)
-    #writecsvfile(dmap, '163.map')
-    #writemap(dmap, '163')
+    
     fname = '../data/gpsout-171'
     data = extract_data(fname, -3)
- #   data = np.array([list(proj_init(x[0], x[1])) for x in data])
-    #dmap = build_dist_map(data[:, 0], data[:, 1])
-    #dmap = readcsvfile('171.map')
-
+ 
     dmap = readmap('171')
     process_multi(fname, data, [5, 10, 20, 50, 100, 200], dmap, 2)
-    #process_once(fname, data, 22, dmap, 2000)
-    #writemap(dmap, '171')
-
-    # for i in [5, 10, 20, 50]:
-
-
-
-
-
-
-    # import time
-    # t0 = time.clock()
-    # fname = '../data/gpsout-163'
-    # process_once(fname, -10, 3)
-    # t1 = time.clock()
-    # print t1 - t0
-
-
-
-
-
-
-
-
-
-    # fname = '../data/gpsout-173'
-    # process_once(fname, -2, 5)
-    # t2 = time.clock()
-    # print t2 - t1
+    

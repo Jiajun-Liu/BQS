@@ -196,7 +196,6 @@ def sync_error(X,Y, age_decay_func=None, plot=False):
             new = np.vstack([xs,ys]).T[1:,:]
 
         reconstructed = np.vstack([reconstructed,new])
-        #print reconstructed.shape[0]
 
     errs = np.linalg.norm(reconstructed-Y, axis=1)
 

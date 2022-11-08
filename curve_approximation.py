@@ -29,23 +29,7 @@ import copy
 import datetime
 from utils import point_to_line_segment_dist, get_angle_vec, get_angle
 import math
-# def point_to_line_segment_dist(xA, yA, xB, yB, xC, yC, infi=True):
-# start, end, p
-#     v_AB = np.array([xB - xA, yB - yA])
-#     v_AC = np.array([xC - xA, yC - yA])
-#     v_BC = np.array([xC - xB, yC - yB])
 
-#     AB = np.linalg.norm(v_AB)
-#     AC = np.linalg.norm(v_AC)
-#     BC = np.linalg.norm(v_BC)
-
-#     if not infi:
-#         if AB ** 2 + AC ** 2 <= BC ** 2:
-#             return AC
-#         elif AB ** 2 + BC ** 2 <= AC ** 2:
-#             return BC
-
-#     return np.linalg.norm(np.cross(v_AB, v_AC)) / AB
 
 
 def curve_approx_dist(x, y, s_index, proj=False):
@@ -169,13 +153,6 @@ def curve_approximation(x, y, m, map_vars={}):
             dmax = E[p, q]
             fp_id = E_id[p, q]
 
-    # print 'iterate:'
-    # for i in range(len(e_list)):
-    #    path = min_num_approx(E, N, e_list[i])
-    #    print i, path, e_list[i]
-
-    # print 'The minimum error (maximum distance) for %d samplings is %.8lf' %
-    # (min_k -2, dmax_optimum)
     return solution, dmax, fp_id, [E, E_id, e_list]
 
 
@@ -288,13 +265,6 @@ def dead_reckoning(X, eps):
 
     for i in xrange(2, n):
         max_d += abs(d[i-1]* math.sin(angles[i-1]-angles[start_idx]))
-
-        #d_on_x += d[i-1]*math.cos(angles[i-1]-angles[start_idx-1])
-
-        #theta = get_angle(X[start_idx],X[i])
-        #max_d = math.sin(theta) * d_on_x
-
-        #print d_on_x, theta, max_d
 
         if abs(max_d) > eps:
             max_d = 0
@@ -418,11 +388,6 @@ def brute_force(x, y, m):
 
 
 if __name__ == '__main__':
-    # N = 50
-    # H = 5.0
-    # m = 10
-    # x = vec_reshape(np.arange(N))
-    # y = vec_reshape(np.random.rand(N) * H)
 
     N = 50
     m=14
@@ -436,67 +401,17 @@ if __name__ == '__main__':
 
     X = np.vstack([x,y]).T
 
-    # print 'x:', x
-    # print 'y:', y
+    
     solution, dmax, max_id, status = curve_approximation(x, y, m)
 
-    # print solution, dmax, max_id
+    
     dmax_check, max_id_check = curve_approx_dist(x, y, solution)
     print solution, len(solution), dmax_check
-    # The red solid lines and red points indicate the original curve.
-    #plt.plot(x, y, 'o-r')
-    # The blue dashed lines and blue points indicate the approximating curve
-    # and the optimal sampling points.
-    #plt.plot(x[solution], y[solution], 'o--b', markersize=10.0)
-    # The green point indicates the furthest point of the orignal curve to the
-    # approximating curve.
-    #plt.plot(x[max_id], y[max_id], 'o', color='green', markersize=10.0)
-    #plt.xlim(0, max(N, H))
-    #plt.ylim(0, max(N, H))
-    # plt.show()
+    
 
     data = np.concatenate((x, y), 1)
     #print 'data', data
     solution2, max_d = DouglasPeucker(X, np.arange(N), 5)
     print len(solution2)
 
-    # dmax_check, max_id_check = curve_approx_dist(x, y, solution2)
-    # print dmax_check
-
-    # from curve_test import duty_cycle
-    # ss = duty_cycle(N, m)
-    # print ss
-    # dmax_check, max_id_check = curve_approx_dist(x, y, ss)
-    # print dmax_check
-
-
-    # for N in range(1,15):
-    #    for m in range(1,5):
-    #        x = np.arange(N)
-    #        y = np.random.rand(N) * H
-    #
-    #        solution, dmax, max_id = curve_approximation(x, y, m)
-    #        dmax2, max_id2, solution2 = brute_force(x, y, m)
-    #
-    #        if dmax != dmax2 or solution != solution2:
-    #            print '\n unusual detected: N = %d, m = %d' % (N, m)
-    #            print 'input X: ',x
-    #            print 'input Y: ',y
-    #            print 'brute force solution:', solution2
-    #            print 'minimum error:% .8lf, furthest point %d' % (dmax2, max_id2)
-    #            print 'polynomial solution:', solution
-    #            print 'minimum error:% .8lf' % (dmax, max_id)
-    #
-    #            dmax_check1, max_id_check1 = curve_approx_dist(x, y, solution)
-    #            dmax_check2, max_id_check2 = curve_approx_dist(x, y, solution2)
-    #
-    #            print 'check brute force dmax %.8lf' % (dmax_check2)
-    #            print 'check polynomial dmax %.8lf' % (dmax_check1)
-
-
-    #dmax2, max_id2, solution2 = brute_force(x, y, 1)
-    # print 'N = %d, m = %d \n' % (N,m)
-    # print '\n brute force solution:', solution2
-    # print 'minimum error:% .8lf' % (dmax2)
-    # print '\n polynomial solution:', solution
-    # print 'minimum error:% .8lf' % (dmax)
+    

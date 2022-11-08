@@ -137,7 +137,6 @@ class BoundingBox:
             fig = plt.figure(idx)
 
         # plot bounding box
-        # print 'box', [self.min_x, self.max_x, self.min_y, self.max_y]
         plt.plot([self.min_x, self.max_x, self.max_x, self.min_x, self.min_x],
                  [self.min_y, self.min_y, self.max_y, self.max_y, self.min_y], 'r', linestyle='dashdot')
 
@@ -287,11 +286,10 @@ class QuadrantSystem:
             Print('angle: %s, range:%s' % (self.new_angle,  self.angle_range))
 
         master = self.master
-        # print '1', master.points
+
         self.box.add_point(p)
-        # print '2', master.points
         self.lines.add_point(p)
-        # print '3', master.points
+
 
         if self.centroid == None:
             self.centroid = [p[0], p[1]]
@@ -305,10 +303,8 @@ class QuadrantSystem:
 
          # get projection points on two bounding lines
 
-        # print '4', master.points
+
     def angle_in_quadrant(self, angle):
-        # if angle > math.pi:
-        #    angle = angle - math.pi
 
         in_quadrant = False
         in_lines = False
@@ -323,16 +319,11 @@ class QuadrantSystem:
         if (angle >= la and angle <= ua):# or (angle > math.pi and angle - math.pi >= la and angle - math.pi <= ua) or (angle < math.pi and angle + math.pi >= la and angle + math.pi <= ua):
             in_lines = True
 
-        #print in_quadrant, in_lines
-
-        #print 'check quadrant', angle, self.angle_range, in_quadrant, in_lines
         return in_quadrant, in_lines
 
     def get_bounds(self, p):
         box = self.box.get_box()
         l_points = self.box.get_intersection(self.lines)
-
-        # print 'l_points', l_points
         bounds = None
 
         if self.point_count == 1:
@@ -371,8 +362,6 @@ class QuadrantSystem:
         far_corner = max(far_corner)
 
 
-        # cp_dist = point_to_line_dist(self.start, p, self.centroid)
-
         angle = get_angle(self.start, p)
         in_quadrant, in_lines = self.angle_in_quadrant(angle)
         in_box = True
@@ -387,7 +376,6 @@ class QuadrantSystem:
         self.corner_dists = corner_dists
 
         if in_quadrant:
-            #print 'in quadrant'
             idx = self.quadrant_idx
             if idx % 2 == 0:
                 c_dists = [corner_dists[0], corner_dists[2]]
@@ -407,76 +395,23 @@ class QuadrantSystem:
             if in_lines:
                 bounds = [
                     max(min(lb_dists), min(ub_dists), lbp_dist, ubp_dist, c_dist), max(lb_dists + ub_dists + c_dists)]
-                # bounds = [0,1000]
+
             elif in_box:
-                # bounds = [
-                # max(min(lb_dists), min(ub_dists), sorted(corner_dists)[1],
-                # lbp_dist, ubp_dist, cp_dist), max(lb_dists + ub_dists)]
 
                 bounds = [
                     max(min(lb_dists), min(ub_dists), lbp_dist, ubp_dist, c_dist), max(lb_dists + ub_dists + c_dists)]
-                # bounds = [0,1000]
+
             else:
                 bounds = [
                     max(min(lb_dists), min(ub_dists), lbp_dist, ubp_dist, c_dist), max(lb_dists + ub_dists + c_dists)]
-                # bounds = [0,1000]
 
-            # if self.cur_max_dist != None:
-            #     # print self.cur_max_dist, self.master.last_computed
-            #     bounds[1] = min(
-            #         2 * self.cur_max_dist, bounds[1])
 
-            # print 'in quadrant', self.lines.lb_angle, self.lines.ub_angle, lb_dists, ub_dists, corner_dists
-            # bounds
         else:
-            #print 'not in quadrant'
-            #bounds = [
-            #    max(min(lb_dists), min(ub_dists), sorted(corner_dists)[2], lbp_dist, ubp_dist), max(corner_dists)+self.master.small[self.quadrant_idx]]
-            #bounds = [
-            #    max(min(lb_dists), min(ub_dists), sorted(corner_dists)[2], lbp_dist, ubp_dist), max(max(corner_dists),self.master.small[self.quadrant_idx])]
+
             bounds = [
                 max(min(lb_dists), min(ub_dists), sorted(corner_dists)[2], lbp_dist, ubp_dist), max(corner_dists)]
-            # bounds = [0,1000]
-            # print "SHIT case"
-            # print 'outta quadrant', lb_dists, ub_dists, corner_dists
 
-        # if self.farthest_point != None and self.master.last_computed != None:
-
-        #     curr_proj = get_proj(self.start, p, self.farthest_point)
-
-        # self.drift = max(self.drift1, self.drift2)
-        #     self.drift = point_to_point_distance(self.last_proj, curr_proj)
-
-            # print self.drift1, self.drift2,  self.master.last_computed,
-            # bounds
-
-            # if (self.drift + self.master.last_computed) < bounds[1]:
-            #    print self.drift + self.master.last_computed, bounds[1]
-            # self.master.get_farthest()
-
-            # print self.drift + self.master.last_computed, self.drift +
-            # self.cur_dist
-
-            # print self.drift + self.master.last_computed, self.drift +
-            # print self.cur_dist_pos, self.master.last_pos
-            # if self.cur_dist_pos and self.cur_dist_pos == self.master.last_pos:
-            #    bounds[1] = min(2 * self.cur_max_dist, bounds[1])
-            # else:
-                # bounds[1] = min(
-                    # point_to_line_dist(self.start,
-                    # self.master.last_computed_point, p) + self.cur_max_dist,
-                    # bounds[1])
-
-            # bounds[1] = min(
-            #     max(self.drift + self.master.last_computed, self.master.last_computed +
-            #         self.cur_dist, self.master.last_computed +
-            #         self.cur_max_dist,
-            #         point_to_line_dist(
-            #             self.start, self.master.last_computed_point, p) + self.master.last_computed,
-            # point_to_line_dist(self.start, self.master.last_computed_point,
-            # p) + self.cur_max_dist), bounds[1])
         self.bounds = bounds
-        #self.bounds[1] += self.error_max
         return bounds
 
     def plot(self, idx=None):
@@ -573,15 +508,6 @@ class TrajProcessor:
 
         box = self.get_g_box()
 
-        # print "start/p/box:", self.start, self.end, box
-        # print self.points
-        # get_angle(self.start, self.end)
-
-        # plt.xticks(
-        #     np.arange(box[0], box[1], scale, dtype=np.int))
-        # plt.yticks(
-        #     np.arange(box[2], box[3], scale, dtype=np.int))
-
         ax = fig.gca()
         ax.set_aspect('equal', 'box')
 
@@ -594,7 +520,6 @@ class TrajProcessor:
         plt.plot(self.start[0], self.start[1], 'ob', markersize=8.0)
         plt.plot(p[0], p[1], 'or', markersize=8.0)
 
-        # last farthest point
 
         if self.last_max_point != None:
             plt.plot(
@@ -627,8 +552,7 @@ class TrajProcessor:
                             self.quadrants[i].bounds[0], self.quadrants[i].bounds[1]), color='r')
             plt.figtext(
                 0.4, 0.02, 'Maxd:%f, Decision:%s' % (self.max_d, decision_text), color='r', weight='bold')
-        # mng = plt.get_current_fig_manager()
-        # mng.resize(*mng.window.maxsize())
+
         plt.show()
 
     def get_quadrant_idx(self, p):
@@ -777,14 +701,7 @@ class TrajProcessor:
                 self.check_result()
             return 0, 0
 
-        #print 'cant decide', self.prev_err
         if not conservative:
-            # print 'damn lb:%s ub:%s' % (self.lower_bound, self.upper_bound)
-            #self.plot(self.end, decision_text='lb<e<ub, Recalculate')
-
-            # if point_to_point_distance(self.end, self.points[-1]) > 1000:
-                # print 'stop the shit'
-            #    return -1, 0
 
             if visualise:
                 self.plot(self.end, decision_text='lb<e<ub, Recalculate')
@@ -796,7 +713,6 @@ class TrajProcessor:
                 if len(self.points) <= 4:
                     max_d = self.upper_bound
                 else:
-                    #self.plot(self.end, decision_text='lb<e<ub, Recalculate')
                     max_d = self.get_farthest(count=True) 
 
             #print max_d
@@ -813,7 +729,6 @@ class TrajProcessor:
 def best_angle(X, obj, i):
     pps = [[],[],[],[]]
     pcounts = [0,0,0,0]
-    #offsets = [math.pi*0.25, math.pi*0.75,math.pi*1.25,math.pi*1.75]
 
     offsets = [math.pi*0.5,math.pi*1.0,math.pi*1.5, math.pi*2]
 
@@ -832,8 +747,6 @@ def best_angle(X, obj, i):
     if pcounts[max_j]>0:
         tangle = get_angle( obj.start, np.mean(  np.array(pps[max_j]), axis=0 ) )
         angle =   offsets[max_j] - tangle
-        #print 'angle --> angle', tangle, angle
-        #print obj.start, np.mean(  np.array(pps[max_j]), axis=0),  offsets[max_j], tangle, angle
     else:
         angle = 0
 
@@ -857,9 +770,7 @@ def traj_to_seg(X, eps):
             continue
         
         pp = copy(X[i])
-        #print pp
         pp = pp.reshape([1,2])
-        #print pp
         if angle != 0:
             pp = rotate_points(pp, angle)
         
@@ -924,8 +835,6 @@ def run_one(fnum, eps, check=False, approx=False, visualise=False, test=False, X
     angle = 0
 
     while i < n:
-
-        #print 'id:%d'%i
         if not obj:
             obj = TrajProcessor(X[i], eps, prev_err=prev_err)
             angle = best_angle(X, obj, i)
@@ -935,52 +844,27 @@ def run_one(fnum, eps, check=False, approx=False, visualise=False, test=False, X
         if i % 5000 == 0:
             print 'Processing %d' % i
 
-        # if point_to_point_distance(X[i - 1], X[i]) < 0.000001:
-        #    i += 1
-        #    continue
-
-        # print 'before process', obj.points
         pp = copy(X[i])
-        #print pp
         if angle != 0:
           pp = rotate_point(pp, angle, obj.start)
-        #print 'rotated', X[i],angle, pp
         idx = obj.process_point(pp)
 
-        #print 'before decision'
+
         decision, max_d = obj.decision(
             conservative=approx, do_check=check, visualise=visualise, test=test)
 
         bounds.append([obj.lower_bound, obj.upper_bound, obj.max_d])
 
-        #print 'decision', decision, max_d, obj.lower_bound, obj.upper_bound
-        # obj.plot(X[i])
-        #print 'decision %s, obj.lower_bound %s, obj.upper_bound %s, pcount\
-        #%s' % (decision, obj.lower_bound, obj.upper_bound, pcount)
         if decision == -1:
-            # sys.exit(0)
 
             arr.append(i - 1)
-
-            # print np.array(obj.points)[0:-1, :], arr
-            # dmax, idmax = curve_approx_dist(np.array(obj.points)[0:-1, 0], np.array(obj.points)[0:-1, 1], arr)
-
-            # if dmax > eps:
-            #    print 'fault', dmax, arr
-            #    sys.exit(0)
-
             pcount += obj.pro_count
-
-            # print 'creating new obj'
-
             obj.re_init(X[i - 1], eps, prev_err=prev_err)
             angle = best_angle(X, obj, i-1)
             if max_d > max_dd:
                 max_dd = max_d
         else:
-            # print 'before postprocess', obj.points
             obj.post_process(obj.end, idx)
-            # print 'after postprocess', obj.points
             i += 1
 
     if arr[-1] != len(X) - 1:
@@ -988,25 +872,10 @@ def run_one(fnum, eps, check=False, approx=False, visualise=False, test=False, X
 
     dmax, idmax, ranges = curve_approx_dist(X[:, 0], X[:, 1], arr)
 
-    # print len(arr), None, 1.0 - float(pcount) / (n - 2), arr, None
-
-    # assert(dmax <= eps)
-    # res0 = [len(arr),
-    #         1.0 - float(pcount) / (n - 1), eps, dmax]
     res0=[]
-    # print res0
-    # ResultList, dmax = DouglasPeucker(X, np.arange(len(X)), eps)
 
-    # dmax, idmax = curve_approx_dist(X[:, 0], X[:, 1], ResultList)
-
-    # print len(ResultList), dmax, ResultList
-
-    # res1 = [len(ResultList), dmax]
-    # print res1
-    # print 'pcount', pcount
     print 'done'
     return res0, bounds, X, np.array(arr)
-    #return res0, res1, 1.0 - float(pcount) / (n - 1), bounds, X, np.array(idx)
 
 
 def make_plot_pp():
@@ -1183,9 +1052,7 @@ def run_all(fids=None):
         pp = np.array(pp)
 
         print 'plot'
-        #plot_res(res0, res1, pp, idx, fid, [str(eps) for eps in epss])
-        #plot_res(res0, res2, None, idx, str(fid)
-        #         + '-approx', [str(eps) for eps in epss])
+        
 
         idx += 1
 
@@ -1194,26 +1061,8 @@ def run_all(fids=None):
 
 if __name__ == '__main__':
 
-    #run_all()
-    # point_to_line_segment_dist.counter = 0
-
-#    X, n = merge_all_data(ids=[163, 175, 186, 1937])
-#    writecsvfile(X, '../data/batsp.txt')
     XX, n = merge_all_data(ids=[174])
     N = n
-#    writecsvfile(X, '../data/carsp.txt')
-
-
-    # N = 50
-    # a = np.arange(1,N+1,2)
-    # b = np.zeros(N/2)+0.5
-    # c = np.arange(2,N+2,2)
-    # d = np.zeros(N/2)+0.5
-
-    # x = np.vstack([a,b]).T.flatten()
-    # y = np.vstack([d,c]).T.flatten()
-
-    # X = np.vstack([x,y]).T
 
     e = 2.0
 
@@ -1245,52 +1094,11 @@ if __name__ == '__main__':
 
 
     from curve_approximation import *
-    #ResultList, dmax, max_id, status = curve_approximation(x, y, e)
-    #ResultList = curve_approximation(X[:,0], X[:,1], e)
-    #ResultList = ResultList[0]
-    # print len(ResultList[0])/float(N)
 
 
     ResultList, dmax = DouglasPeucker(XX, np.arange(len(XX)), e*5)
-    #ResultList = buffered_greedy(X, e, 16)
+    
 
     print len(ResultList), len(ResultList)/float(N)
 
-    # #plt.plot( X[:,0], X[:,1], 'o' )
-    # plt.plot( X[arr,0], X[arr,1], 'o-' )
-    # #plt.plot( X[ResultList,0], X[ResultList,1], '-+' )
-
-    # print curve_approx_dist(X[:,0], X[:,1], ResultList)
-    # #plt.show()
-
-    # plt.tight_layout()
-
-    # plt.savefig('extremecase.pdf', bbox_inches='tight')
-
-
-
-    # print X.shape
-    #res0, bounds, X, arr = run_one(
-    #     'bats', 2, check=False, approx=False, visualise=False, test=False, X=X, n=n)
-    #print res0
-    # X, n = merge_all_data(ids=[171, 174])
-
-    # 71 .9x
-    # 86 .86  75 .89 937 88  63
-    #fid = 163
-    #eps = 2
-    #X, n = extract_data('../data/%s' % fid, -1, False)
-    #n = 2000
-    #X = X[0:n, :]
-
-    #X = np.array([list(proj_init(x[0], x[1])) for x in X])
-    #res0, bounds, X, arr = run_one(
-    #    fid, eps, check=False, approx=False, visualise=True, test=False, X=X, n=n)
-
-    ##ResultList, dmax = DouglasPeucker(X, np.arange(len(X)), eps)
-    #print len(ResultList)
-    # dmax, idmax = curve_approx_dist(X[:, 0], X[:, 1], ResultList)
-    # print 'bqs', point_to_line_segment_dist.counter
-
-    # from plot_path import plot_path
-    # plot_path(X, idx, 'path.pdf', 'sc', title=None)
+    
