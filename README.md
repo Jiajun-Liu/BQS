@@ -5,7 +5,7 @@ Official reference implementation of the 2015/2016 papers:
 
 1. *J. Liu et al., "A Novel Framework for Online Amnesic Trajectory Compression in Resource-Constrained Environments," in IEEE Transactions on Knowledge and Data Engineering, vol. 28, no. 11, pp. 2827-2841, 1 Nov. 2016, doi: 10.1109/TKDE.2016.2598171.*
 
-LEGACY CODE PROVIDED AS IS, NOT THE BEST READABILITY. 
+DISCLAIMER: LEGACY CODE PROVIDED AS IS, NOT THE BEST READABILITY. 
 
 ## Description
 This repository implements an error-bounded, online trajectory simplification algorithm called Bounded Quadrant System (BQS). This method has two versions: the full version and the light version. The full version searches for a solution by looking into the error upperbound when adding a new point to a quadrant-wise bounding system. As an online algorithm, the full version of BQS outperforms buffer/batch-based methods. And the light version reaches O(1) in both space and time complexity for proces a new point, with very competitive compression rate and error.
